@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _78_MagicSquare
+namespace _0078_MagicSquare
 {
     internal class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace _78_MagicSquare
+﻿namespace _0078_MagicSquare
 {
     internal enum OutOfSquareStatus
     {
