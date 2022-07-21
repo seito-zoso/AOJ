@@ -8,7 +8,7 @@ namespace _0556_Tile
     {
         private static void Main(string[] args)
         {
-            var inputs = GetInputs();
+            var inputs = GetSampleInputs3();
             var outputs = GetOutputs(inputs);
             ShowOutputs(outputs);
         }
@@ -109,6 +109,23 @@ namespace _0556_Tile
                     });
         }
 
+        private static Inputs GetSampleInputs3()
+        {
+            return new Inputs(
+                10,
+                new[]
+                    {
+                        new PlanePosition(4, 7),
+                        new PlanePosition(2, 10),
+                        new PlanePosition(6, 2),
+                        new PlanePosition(7, 10),
+                        new PlanePosition(7, 9),
+                        new PlanePosition(1, 1),
+                        new PlanePosition(6, 5),
+                        new PlanePosition(8, 3),
+                    });
+        }
+
         #endregion
 
         #region 演算処理：出力の取得
@@ -139,7 +156,7 @@ namespace _0556_Tile
 
             while (true)
             {
-                if (sideLength < 0)
+                if (sideLength <= 0)
                 {
                     return;
                 }
@@ -153,13 +170,17 @@ namespace _0556_Tile
 
         private static Color GetNextColor(Color color)
         {
-            return color switch
+            switch (color)
             {
-                Color.Red => Color.Blue,
-                Color.Blue => Color.Yellow,
-                Color.Yellow => Color.Red,
-                _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
-            };
+                case Color.Red:
+                    return Color.Blue;
+                case Color.Blue:
+                    return Color.Yellow;
+                case Color.Yellow:
+                    return Color.Red;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(color), color, null);
+            }
         }
 
         private static void ArrangeOutermostTilesClockwise(
