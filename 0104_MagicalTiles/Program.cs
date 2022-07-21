@@ -8,7 +8,7 @@ namespace _0104_MagicalTiles
     {
         private static void Main(string[] args)
         {
-            var inputs = GetSampleInputs();
+            var inputs = GetInputs();
             var outputs = GetOutputs(inputs);
             ShowOutputs(outputs);
         }
