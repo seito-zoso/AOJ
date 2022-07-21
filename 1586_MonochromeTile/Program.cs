@@ -8,7 +8,7 @@ namespace _1586_MonochromeTile
     {
         private static void Main(string[] args)
         {
-            var inputs = GetSampleInputs();
+            var inputs = GetInputs();
             var outputs = GetOutputs(inputs);
             ShowOutputs(outputs);
         }
@@ -116,7 +116,8 @@ namespace _1586_MonochromeTile
 
         private static Inputs GetInputs()
         {
-            var (width, height) = GetRectangleSize();
+            //var (width, height) = GetRectangleSize();
+            var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
             var numberOfDays = GetNumberOfDays();
             var numbersIndicatingRectangleAreaCollection = GetNumbersIndicatingRectangleAreaCollection(numberOfDays);
             return new Inputs(width, height, numbersIndicatingRectangleAreaCollection);
