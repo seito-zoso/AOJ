@@ -8,7 +8,7 @@ namespace _0556_Tile
     {
         private static void Main(string[] args)
         {
-            var inputs = GetSampleInputs3();
+            var inputs = GetInputs();
             var outputs = GetOutputs(inputs);
             ShowOutputs(outputs);
         }
@@ -141,16 +141,16 @@ namespace _0556_Tile
 
         #region 演算処理：タイルの配置
 
-        private static TileMural CreateTileMural(int sideLength)
+        private static Tile[,] CreateTileMural(int sideLength)
         {
-            var tileMural = new TileMural(sideLength);
+            var tileMural = new Tile[sideLength, sideLength];
             ArrangeTilesInOrderFromOutside(tileMural);
             return tileMural;
         }
 
-        private static void ArrangeTilesInOrderFromOutside(TileMural tileMural)
+        private static void ArrangeTilesInOrderFromOutside(Tile[,] tileMural)
         {
-            var sideLength = tileMural.Tiles.GetLength(0);
+            var sideLength = tileMural.GetLength(0);
             var startPosition = new PlanePosition(0, 0);
             var color = Color.Red;
 
@@ -184,7 +184,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeOutermostTilesClockwise(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition startPosition,
             int sideLength,
             Color color)
@@ -196,7 +196,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeTopSideTiles(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition topLeftPosition,
             int sideLength,
             Color color)
@@ -207,7 +207,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeRightSideTiles(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition topLeftPosition,
             int sideLength,
             Color color)
@@ -219,7 +219,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeBottomSideTiles(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition topLeftPosition,
             int sideLength,
             Color color)
@@ -231,7 +231,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeLeftSideTiles(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition topLeftPosition,
             int sideLength,
             Color color)
@@ -242,7 +242,7 @@ namespace _0556_Tile
         }
 
         private static void ArrangeTilesVertically(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition startPosition,
             PlanePosition endPosition,
             Color color)
@@ -258,12 +258,12 @@ namespace _0556_Tile
 
             for (var i = startY; i <= endY; i++)
             {
-                tileMural.Tiles[x, i] = new Tile(color);
+                tileMural[x, i] = new Tile(color);
             }
         }
 
         private static void ArrangeTilesHorizontally(
-            TileMural tileMural,
+            Tile[,] tileMural,
             PlanePosition startPosition,
             PlanePosition endPosition,
             Color color)
@@ -279,7 +279,7 @@ namespace _0556_Tile
 
             for (var i = startX; i <= endX; i++)
             {
-                tileMural.Tiles[i, y] = new Tile(color);
+                tileMural[i, y] = new Tile(color);
             }
         }
 
@@ -288,16 +288,16 @@ namespace _0556_Tile
         #region 演算処理：剥がれ落ちたタイルの色を取得
 
         private static IEnumerable<Color> GetColorsOfPeeledOffTiles(
-            TileMural tileMural,
+            Tile[,] tileMural,
             IEnumerable<PlanePosition> positionsOfPeeledOffTiles)
         {
             return positionsOfPeeledOffTiles
                 .Select(x => GetTileColor(tileMural, x)).ToList();
         }
 
-        private static Color GetTileColor(TileMural tileMural, PlanePosition position)
+        private static Color GetTileColor(Tile[,] tileMural, PlanePosition position)
         {
-            return tileMural.Tiles[position.X - 1, position.Y - 1].Color;
+            return tileMural[position.X - 1, position.Y - 1].Color;
         }
 
         #endregion
