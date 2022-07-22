@@ -6,6 +6,16 @@ namespace _0104_MagicalTiles
 {
     internal class Program
     {
+        private static readonly IReadOnlyDictionary<char, Direction> CharacterDirectionPairs =
+            new Dictionary<char, Direction>
+                {
+                    { '.', Direction.None },
+                    { '>', Direction.East },
+                    { '<', Direction.West },
+                    { 'v', Direction.South },
+                    { '^', Direction.North },
+                };
+
         private static void Main(string[] args)
         {
             var inputs = GetInputs();
@@ -181,27 +191,8 @@ namespace _0104_MagicalTiles
         {
             foreach (var directionCharacter in tileRowString.ToCharArray())
             {
-                var direction = ConvertInputCharacterToDirection(directionCharacter);
+                var direction = CharacterDirectionPairs[directionCharacter];
                 yield return new MagicalTile(direction);
-            }
-        }
-
-        private static Direction ConvertInputCharacterToDirection(char directionCharacter)
-        {
-            switch (directionCharacter)
-            {
-                case '.':
-                    return Direction.None;
-                case '>':
-                    return Direction.East;
-                case '<':
-                    return Direction.West;
-                case 'v':
-                    return Direction.South;
-                case '^':
-                    return Direction.North;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
