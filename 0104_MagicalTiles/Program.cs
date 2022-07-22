@@ -9,8 +9,8 @@ namespace _0104_MagicalTiles
         private static void Main(string[] args)
         {
             var inputs = GetInputs();
-            var outputs = GetOutputs(inputs);
-            ShowOutputs(outputs);
+            var movementResults = GetMovementResults(inputs);
+            ShowOutputs(movementResults);
         }
 
         #region 入力処理
@@ -133,12 +133,36 @@ namespace _0104_MagicalTiles
 
         #region 演算処理
 
-        private static IEnumerable<Output> GetOutputs(IEnumerable<Input> inputs)
+        private class MovementResult
         {
-            return inputs.Select(GetOutput);
+            // 変な組み合わせ入れれないようにctorをprivateにしたが
+            private MovementResult(bool isLoop, Position position)
+            {
+                this.IsLoop = isLoop;
+                this.Position = position;
+            }
+
+            public static MovementResult CreateLoopResult()
+            {
+                return new MovementResult(true, null);
+            }
+
+            public static MovementResult CreateNonLoopResult(Position position)
+            {
+                return new MovementResult(false, position);
+            }
+
+            public bool IsLoop { get; }
+
+            public Position Position { get; }
         }
 
-        private static Output GetOutput(Input input)
+        private static IEnumerable<MovementResult> GetMovementResults(IEnumerable<Input> inputs)
+        {
+            return inputs.Select(GetMovementResult);
+        }
+
+        private static MovementResult GetMovementResult(Input input)
         {
             var tiles = CreateMagicalTiles(input).ToList();
             var startPosition = GetStartPosition();
@@ -186,21 +210,21 @@ namespace _0104_MagicalTiles
             return new Position(0, 0);
         }
 
-        private static Output MoveUntilDetectLoopOrStop(IList<IList<MagicalTile>> tiles, Position currentPosition)
+        private static MovementResult MoveUntilDetectLoopOrStop(IList<IList<MagicalTile>> tiles, Position currentPosition)
         {
             while (true)
             {
                 var currentTile = GetTile(tiles, currentPosition);
                 if (currentTile.Passed)
                 {
-                    return Output.CreateLoopOutput();
+                    return MovementResult.CreateLoopResult();
                 }
 
                 currentTile.Passed = true;
 
                 var nextPosition = GetNextPosition(currentTile, currentPosition);
                 var arriveGoal = PositionEquals(currentPosition, nextPosition);
-                if (arriveGoal) return Output.CreateNonLoopOutput(currentPosition);
+                if (arriveGoal) return MovementResult.CreateNonLoopResult(currentPosition);
                 currentPosition = nextPosition;
             }
         }
@@ -236,32 +260,8 @@ namespace _0104_MagicalTiles
         #endregion
 
         #region 出力処理
-
-        private class Output
-        {
-            // 変な組み合わせ入れれないようにctorをprivateにしたが
-            private Output(bool isLoop, Position position)
-            {
-                this.IsLoop = isLoop;
-                this.Position = position;
-            }
-
-            public static Output CreateLoopOutput()
-            {
-                return new Output(true, null);
-            }
-
-            public static Output CreateNonLoopOutput(Position position)
-            {
-                return new Output(false, position);
-            }
-
-            public bool IsLoop { get; }
-
-            public Position Position { get; }
-        }
-
-        private static void ShowOutputs(IEnumerable<Output> outputs)
+        
+        private static void ShowOutputs(IEnumerable<MovementResult> outputs)
         {
             foreach (var output in outputs)
             {
