@@ -14,7 +14,7 @@ namespace _0556_Tile
         }
 
         #region 入力処理
-
+        // 文字列を意味のあるデータに変換する処理はここでOKです
         private class Inputs
         {
             public Inputs(int sideLength, IEnumerable<PlanePosition> positionsOfPeeledOffTiles)
@@ -36,7 +36,7 @@ namespace _0556_Tile
         
         private static int GetSideLength()
         {
-            return ReadIntegerNumber();
+            return ReadIntegerNumber(); // ここまでわけなくていいかも
         }
 
         private static int GetNumberOfPeeledOffTiles()
@@ -129,7 +129,7 @@ namespace _0556_Tile
         #endregion
 
         #region 演算処理：出力の取得
-
+        // はがれたタイルの位置を求めるなどの名前にするべき。課題を解決する名前
         private static IEnumerable<Color> GetOutputs(Inputs inputs)
         {
             var tileMural = CreateTileMural(inputs.SideLength);
@@ -141,6 +141,7 @@ namespace _0556_Tile
 
         #region 演算処理：タイルの配置
 
+        // 縦横決まった数のObjectなのでTile[,]でOK。もしくはinternalクラス作成 インデクサーありの
         private static Tile[,] CreateTileMural(int sideLength)
         {
             var tileMural = new Tile[sideLength, sideLength];
