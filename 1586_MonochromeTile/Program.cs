@@ -13,6 +13,26 @@ namespace _1586_MonochromeTile
             ShowOutputs(outputs);
         }
 
+        #region 内部クラス
+
+        private class Inputs
+        {
+            public Inputs(int width, int height, IEnumerable<IEnumerable<int>> checkAreas)
+            {
+                this.Width = width;
+                this.Height = height;
+                this.CheckAreas = checkAreas;
+            }
+
+            public int Width { get; }
+
+            public int Height { get; }
+            // ここで純粋な入力にするのか、何かにConvertするのか悩んだ。入力処理の責務範囲
+            public IEnumerable<IEnumerable<int>> CheckAreas { get; }
+        }
+
+        #endregion
+
         #region 演算処理
 
         // ここの命名
@@ -97,22 +117,6 @@ namespace _1586_MonochromeTile
         #endregion
 
         #region 入力処理
-
-        private class Inputs
-        {
-            public Inputs(int width, int height, IEnumerable<IEnumerable<int>> checkAreas)
-            {
-                this.Width = width;
-                this.Height = height;
-                this.CheckAreas = checkAreas;
-            }
-
-            public int Width { get; }
-
-            public int Height { get; }
-            // ここで純粋な入力にするのか、何かにConvertするのか悩んだ。入力処理の責務範囲
-            public IEnumerable<IEnumerable<int>> CheckAreas { get; }
-        }
 
         private static Inputs GetInputs()
         {
