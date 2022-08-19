@@ -23,7 +23,7 @@ namespace _0104_MagicalTiles
             ShowOutputs(movementResults);
         }
 
-        #region 入力処理
+        #region 内部クラス
 
         private class Input
         {
@@ -40,6 +40,39 @@ namespace _0104_MagicalTiles
 
             public IEnumerable<string> TilesStatus { get; }
         }
+
+        private class MovementResult
+        {
+            protected MovementResult(bool isLoop)
+            {
+                this.IsLoop = isLoop;
+            }
+
+            public bool IsLoop { get; }
+        }
+
+        private class LoopResult : MovementResult
+        {
+            public LoopResult()
+                : base(true)
+            {
+            }
+        }
+
+        private class NonLoopResult : MovementResult
+        {
+            public NonLoopResult(Position position)
+                : base(false)
+            {
+                this.Position = position;
+            }
+
+            public Position Position { get; }
+        }
+        
+        #endregion
+
+        #region 入力処理
 
         private static IEnumerable<Input> GetInputs()
         {
@@ -142,35 +175,6 @@ namespace _0104_MagicalTiles
 
 
         #region 演算処理
-
-        private class LoopResult : MovementResult
-        {
-            public LoopResult()
-                : base(true)
-            {
-            }
-        }
-
-        private class NonLoopResult : MovementResult
-        {
-            public NonLoopResult(Position position)
-                : base(false)
-            {
-                this.Position = position;
-            }
-
-            public Position Position { get; }
-        }
-
-        private class MovementResult
-        {
-            protected MovementResult(bool isLoop)
-            {
-                this.IsLoop = isLoop;
-            }
-
-            public bool IsLoop { get; }
-        }
 
         private static IEnumerable<MovementResult> GetMovementResults(IEnumerable<Input> inputs)
         {
