@@ -143,28 +143,33 @@ namespace _0104_MagicalTiles
 
         #region 演算処理
 
-        private class MovementResult
+        private class LoopResult : MovementResult
         {
-            // 変な組み合わせ入れれないようにctorをprivateにしたが
-            private MovementResult(bool isLoop, Position position)
+            public LoopResult()
+                : base(true)
             {
-                this.IsLoop = isLoop;
+            }
+        }
+
+        private class NonLoopResult : MovementResult
+        {
+            public NonLoopResult(Position position)
+                : base(false)
+            {
                 this.Position = position;
             }
 
-            public static MovementResult CreateLoopResult()
-            {
-                return new MovementResult(true, null);
-            }
+            public Position Position { get; }
+        }
 
-            public static MovementResult CreateNonLoopResult(Position position)
+        private class MovementResult
+        {
+            protected MovementResult(bool isLoop)
             {
-                return new MovementResult(false, position);
+                this.IsLoop = isLoop;
             }
 
             public bool IsLoop { get; }
-
-            public Position Position { get; }
         }
 
         private static IEnumerable<MovementResult> GetMovementResults(IEnumerable<Input> inputs)
@@ -208,14 +213,14 @@ namespace _0104_MagicalTiles
                 var currentTile = GetTile(tiles, currentPosition);
                 if (currentTile.Passed)
                 {
-                    return MovementResult.CreateLoopResult();
+                    return new LoopResult();
                 }
 
                 currentTile.Passed = true;
 
                 var nextPosition = GetNextPosition(currentTile, currentPosition);
                 var arriveGoal = PositionEquals(currentPosition, nextPosition);
-                if (arriveGoal) return MovementResult.CreateNonLoopResult(currentPosition);
+                if (arriveGoal) return new NonLoopResult(currentPosition);
                 currentPosition = nextPosition;
             }
         }
@@ -260,9 +265,9 @@ namespace _0104_MagicalTiles
                 {
                     Console.WriteLine("Loop");
                 }
-                else
+                else if (output is NonLoopResult nonLoopOutput)
                 {
-                    Console.WriteLine($"{output.Position.X} {output.Position.Y}");
+                    Console.WriteLine($"{nonLoopOutput.Position.X} {nonLoopOutput.Position.Y}");
                 }
             }
         }
