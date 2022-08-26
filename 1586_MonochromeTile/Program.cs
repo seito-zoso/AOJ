@@ -13,6 +13,26 @@ namespace _1586_MonochromeTile
             DisplayIntegerNumbers(blackedTileCount);
         }
 
+        #region 内部クラス
+
+        private class Tile
+        {
+            public Tile(Color color)
+            {
+                this.Color = color;
+            }
+
+            public Color Color { get; set; }
+        }
+
+        private enum Color
+        {
+            White,
+            Black
+        }
+
+        #endregion
+
         #region 入力処理
 
         // 元はInputクラスを作り戻り値にしていたが、名前に悩んだのでタプルにした。メソッド名も同じく悩んだので。
