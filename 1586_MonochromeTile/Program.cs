@@ -104,39 +104,33 @@ namespace _1586_MonochromeTile
             return TaroActs(tiles, inputs.CheckAreas);
         }
 
-        private static IEnumerable<IEnumerable<Tile>> InitializeTiles(int width, int height)
+        private static Tile[,] InitializeTiles(int width, int height)
         {
-            var tiles = new List<IEnumerable<Tile>>();
+            var tiles = new Tile[width, height];
             for (var i = 0; i < height; i++)
             {
-                var tileRow = new List<Tile>();
                 for (var j = 0; j < width; j++)
                 {
-                    var tile = new Tile(Color.White);
-                    tileRow.Add(tile);
+                    tiles[i , j] = new Tile(Color.White);
                 }
-                tiles.Add(tileRow);
             }
 
             return tiles;
         }
 
         private static IEnumerable<int> TaroActs(
-            IEnumerable<IEnumerable<Tile>> tiles,
-            IEnumerable<IEnumerable<int>> checkAreas)
+            Tile[,] tiles,
+            IEnumerable<int[]> checkAreas)
         {
-            var blackedTilesCounts = new List<int>();
             var total = 0;
             foreach (var checkAreaOneDay in checkAreas)
             {
                 var oneDayCount = PaintTilesBlack(tiles, checkAreaOneDay);
-                blackedTilesCounts.Add(total += oneDayCount);
+                yield return total += oneDayCount;
             }
-
-            return blackedTilesCounts;
         }
 
-        private static int PaintTilesBlack(IEnumerable<IEnumerable<Tile>> tiles, IEnumerable<int> checkAreaOneDay)
+        private static int PaintTilesBlack(Tile[,] tiles, int[] checkAreaOneDay)
         {
             var targetTiles = GetTilesInArea(tiles, checkAreaOneDay).ToList();
             if (CheckAllTilesColor(targetTiles, Color.White) == false)
@@ -148,16 +142,14 @@ namespace _1586_MonochromeTile
             return targetTiles.Count;
         }
 
-        private static IEnumerable<Tile> GetTilesInArea(IEnumerable<IEnumerable<Tile>> tiles, IEnumerable<int> area)
+        private static IEnumerable<Tile> GetTilesInArea(Tile[,] tiles, int[] area)
         {
-            var tilesList = tiles.ToList();
-            var areaList = area.ToList();
-            var (left, top, right, bottom) = (areaList[0], areaList[1], areaList[2], areaList[3]);
+            var (left, top, right, bottom) = (area[0], area[1], area[2], area[3]);
             for (var i = top - 1; i < bottom; i++)
             {
                 for (var j = left - 1; j < right; j++)
                 {
-                    yield return tilesList[i].ToList()[j];
+                    yield return tiles[i, j];
                 }
             }
         }
