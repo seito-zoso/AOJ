@@ -36,7 +36,8 @@ namespace _1586_MonochromeTile
         #region 入力処理
 
         // 元はInputクラスを作り戻り値にしていたが、名前に悩んだのでタプルにした。メソッド名も同じく悩んだので。
-        private static ((int width, int height), IEnumerable<IReadOnlyList<int>>) GetTileSizeAndCheckAreas()
+        // IEnumerable も IReadOnlyListでいい
+        private static ((int width, int height) size, IEnumerable<IReadOnlyList<int>> checkArea) GetTileSizeAndCheckAreas()
         {
             var (width, height) = GetRectangleSize();
             //var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
@@ -118,13 +119,13 @@ namespace _1586_MonochromeTile
         private static int PaintTilesBlackInCheckArea(Tile[,] tiles, IReadOnlyList<int> checkArea)
         {
             var targetTiles = GetTilesInArea(tiles, checkArea).ToList();
-            var araAllTilesWhite = CheckAllTilesColor(targetTiles, Color.White);
+            var araAllTilesWhite = CheckAllTilesColor(targetTiles, Color.White);  // CheckAllTilesWhiteにしてもいい。今後黒チェックを使わないという想定。
             if (araAllTilesWhite  == false)
             {
                 return 0;
             }
 
-            PaintTiles(targetTiles, Color.Black);
+            PaintTiles(targetTiles, Color.Black); // PaintTilesBlackにしてもいい。今後白塗りを使わないという想定。
             return targetTiles.Count;
         }
 

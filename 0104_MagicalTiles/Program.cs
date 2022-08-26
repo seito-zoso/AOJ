@@ -61,13 +61,13 @@ namespace _0104_MagicalTiles
 
         private class NonLoopResult : MovementResult
         {
-            public NonLoopResult(Position position)
+            public NonLoopResult(Position lastPosition)
                 : base(false)
             {
-                this.Position = position;
+                this.LastPosition = lastPosition;
             }
 
-            public Position Position { get; }
+            public Position LastPosition { get; }
         }
         
         #endregion
@@ -271,7 +271,7 @@ namespace _0104_MagicalTiles
                 }
                 else if (output is NonLoopResult nonLoopOutput)
                 {
-                    Console.WriteLine($"{nonLoopOutput.Position.X} {nonLoopOutput.Position.Y}");
+                    Console.WriteLine($"{nonLoopOutput.LastPosition.X} {nonLoopOutput.LastPosition.Y}");
                 }
             }
         }
