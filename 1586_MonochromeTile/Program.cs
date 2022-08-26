@@ -33,6 +33,67 @@ namespace _1586_MonochromeTile
 
         #endregion
 
+        #region 入力処理
+
+        private static Inputs GetInputs()
+        {
+            //var (width, height) = GetRectangleSize();
+            var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
+            var numberOfDays = ReadIntegerNumber();
+            var rectangleAreaCollection = GetRectangleAreaCollection(numberOfDays);
+            return new Inputs(width, height, rectangleAreaCollection);
+        }
+
+        private static (int, int) GetRectangleSize()
+        {
+            var numbers = ReadSpaceSeparatedIntegerNumbers().ToList();
+            return (numbers[0], numbers[1]);
+        }
+
+        private static int ReadIntegerNumber()
+        {
+            var readLine = Console.ReadLine();
+            int.TryParse(readLine, out var number);
+            return number;
+        }
+
+        private static IEnumerable<IEnumerable<int>> GetRectangleAreaCollection(int numberOfDays)
+        {
+            var rectangleAreaCollection = new List<IEnumerable<int>>();
+            for (var i = 0; i < numberOfDays; i++)
+            {
+                var rectangleArea = ReadSpaceSeparatedIntegerNumbers();
+                rectangleAreaCollection.Add(rectangleArea);
+            }
+
+            return rectangleAreaCollection;
+        }
+
+        private static IEnumerable<int> ReadSpaceSeparatedIntegerNumbers()
+        {
+            const string Space = " ";
+            var readLine = Console.ReadLine();
+            var splitLine = readLine.Split(Space);
+            return splitLine.Select(int.Parse);
+        }
+
+        private static Inputs GetSampleInputs()
+        {
+            return new Inputs(
+                5,
+                4,
+                new List<IEnumerable<int>>()
+                    {
+                        new List<int>() { 1, 1, 3, 3 },
+                        new List<int>() { 3, 2, 4, 2 },
+                        new List<int>() { 4, 3, 5, 4 },
+                        new List<int>() { 1, 4, 5, 4 },
+                        new List<int>() { 4, 1, 4, 1 },
+                    });
+        }
+
+        #endregion
+
         #region 演算処理
 
         // ここの命名
@@ -115,67 +176,6 @@ namespace _1586_MonochromeTile
         }
 
         #endregion
-
-        #region 入力処理
-
-        private static Inputs GetInputs()
-        {
-            //var (width, height) = GetRectangleSize();
-            var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
-            var numberOfDays = ReadIntegerNumber();
-            var rectangleAreaCollection = GetRectangleAreaCollection(numberOfDays);
-            return new Inputs(width, height, rectangleAreaCollection);
-        }
-
-        private static (int, int) GetRectangleSize()
-        {
-            var numbers = ReadSpaceSeparatedIntegerNumbers().ToList();
-            return (numbers[0], numbers[1]);
-        }
-
-        private static int ReadIntegerNumber()
-        {
-            var readLine = Console.ReadLine();
-            int.TryParse(readLine, out var number);
-            return number;
-        }
-
-        private static IEnumerable<IEnumerable<int>> GetRectangleAreaCollection(int numberOfDays)
-        {
-            var numbersIndicatingRectangleAreaCollection = new List<IEnumerable<int>>();
-            for (var i = 0; i < numberOfDays; i++)
-            {
-                var numbersIndicatingRectangleArea = ReadSpaceSeparatedIntegerNumbers();
-                numbersIndicatingRectangleAreaCollection.Add(numbersIndicatingRectangleArea);
-            }
-
-            return numbersIndicatingRectangleAreaCollection;
-        }
-
-        private static IEnumerable<int> ReadSpaceSeparatedIntegerNumbers()
-        {
-            const string Space = " ";
-            var readLine = Console.ReadLine();
-            var splitLine = readLine.Split(Space);
-            return splitLine.Select(int.Parse);
-        }
-        
-        #endregion
-
-        private static Inputs GetSampleInputs()
-        {
-            return new Inputs(
-                5,
-                4,
-                new List<IEnumerable<int>>()
-                    {
-                        new List<int>() { 1, 1, 3, 3 },
-                        new List<int>() { 3, 2, 4, 2 },
-                        new List<int>() { 4, 3, 5, 4 },
-                        new List<int>() { 1, 4, 5, 4 },
-                        new List<int>() { 4, 1, 4, 1 },
-                    });
-        }
 
         #region 出力処理
 
