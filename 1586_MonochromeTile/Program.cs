@@ -27,7 +27,7 @@ namespace _1586_MonochromeTile
             public int Width { get; }
 
             public int Height { get; }
-            // ここで純粋な入力にするのか、何かにConvertするのか悩んだ。入力処理の責務範囲
+
             public IEnumerable<IEnumerable<int>> CheckAreas { get; }
         }
 
@@ -50,13 +50,6 @@ namespace _1586_MonochromeTile
             return (numbers[0], numbers[1]);
         }
 
-        private static int ReadIntegerNumber()
-        {
-            var readLine = Console.ReadLine();
-            int.TryParse(readLine, out var number);
-            return number;
-        }
-
         private static IEnumerable<IEnumerable<int>> GetRectangleAreaCollection(int numberOfDays)
         {
             var rectangleAreaCollection = new List<IEnumerable<int>>();
@@ -67,6 +60,13 @@ namespace _1586_MonochromeTile
             }
 
             return rectangleAreaCollection;
+        }
+
+        private static int ReadIntegerNumber()
+        {
+            var readLine = Console.ReadLine();
+            int.TryParse(readLine, out var number);
+            return number;
         }
 
         private static IEnumerable<int> ReadSpaceSeparatedIntegerNumbers()
@@ -139,12 +139,12 @@ namespace _1586_MonochromeTile
         private static int TaroActsOneDay(IEnumerable<IEnumerable<Tile>> tiles, IEnumerable<int> checkAreaOneDay)
         {
             var targetTiles = GetTilesInArea(tiles, checkAreaOneDay).ToList();
-            if (CheckIfAllTilesWhite(targetTiles) == false)
+            if (CheckAllTilesColor(targetTiles, Color.White) == false)
             {
                 return 0;
             }
 
-            PaintTilesBlack(targetTiles);
+            PaintTiles(targetTiles, Color.Black);
             return targetTiles.Count;
         }
 
@@ -162,16 +162,16 @@ namespace _1586_MonochromeTile
             }
         }
 
-        private static bool CheckIfAllTilesWhite(IEnumerable<Tile> tiles)
+        private static bool CheckAllTilesColor(IEnumerable<Tile> tiles, Color color)
         {
-            return tiles.All(x => x.Color == Color.White);
+            return tiles.All(x => x.Color == color);
         }
 
-        private static void PaintTilesBlack(IEnumerable<Tile> tiles)
+        private static void PaintTiles(IEnumerable<Tile> tiles, Color color)
         {
             foreach (var tile in tiles)
             {
-                tile.Color = Color.Black;
+                tile.Color = color;
             }
         }
 
