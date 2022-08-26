@@ -9,8 +9,8 @@ namespace _1586_MonochromeTile
         private static void Main(string[] args)
         {
             var (tileSize, checkAreas)  = GetTileSizeAndCheckAreas();
-            var outputs = CreateMonochromeTileAndCountBlackedTiles(tileSize, checkAreas);
-            ShowOutputs(outputs);
+            var blackedTileCount = CountBlackedTiles(tileSize, checkAreas);
+            DisplayIntegerNumbers(blackedTileCount);
         }
 
         #region 入力処理
@@ -61,7 +61,7 @@ namespace _1586_MonochromeTile
 
         #region 演算処理
 
-        private static IEnumerable<int> CreateMonochromeTileAndCountBlackedTiles((int width, int height) tileSize, IEnumerable<int[]> checkAreas)
+        private static IEnumerable<int> CountBlackedTiles((int width, int height) tileSize, IEnumerable<int[]> checkAreas)
         {
             var whiteTiles = InitializeTiles(tileSize.width, tileSize.height, Color.White);
             return PaintAllCheckAreasBlack(whiteTiles, checkAreas);
@@ -135,11 +135,11 @@ namespace _1586_MonochromeTile
 
         #region 出力処理
 
-        private static void ShowOutputs(IEnumerable<int> outputs)
+        private static void DisplayIntegerNumbers(IEnumerable<int> numbers)
         {
-            foreach (var output in outputs)
+            foreach (var number in numbers)
             {
-                Console.WriteLine(output);
+                Console.WriteLine(number);
             }
         }
 
