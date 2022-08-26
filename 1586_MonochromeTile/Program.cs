@@ -15,10 +15,11 @@ namespace _1586_MonochromeTile
 
         #region 入力処理
 
-        private static ((int width, int height), IEnumerable<int[]>) GetTileSizeAndCheckAreas()
+        // 元はInputクラスを作り戻り値にしていたが、名前に悩んだのでタプルにした。メソッド名も同じく悩んだので。
+        private static ((int width, int height), IEnumerable<IReadOnlyList<int>>) GetTileSizeAndCheckAreas()
         {
-            //var (width, height) = GetRectangleSize();
-            var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
+            var (width, height) = GetRectangleSize();
+            //var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
             var numberOfDays = ReadIntegerNumber();
             var rectangleAreaCollection = GetRectangleAreaCollection(numberOfDays);
             return ((width, height), rectangleAreaCollection);
@@ -30,9 +31,9 @@ namespace _1586_MonochromeTile
             return (numbers[0], numbers[1]);
         }
 
-        private static IEnumerable<int[]> GetRectangleAreaCollection(int numberOfDays)
+        private static IEnumerable<IReadOnlyList<int>> GetRectangleAreaCollection(int numberOfDays)
         {
-            var rectangleAreaCollection = new List<int[]>();
+            var rectangleAreaCollection = new List<IReadOnlyList<int>>();
             for (var i = 0; i < numberOfDays; i++)
             {
                 var rectangleArea = ReadSpaceSeparatedIntegerNumbers();
@@ -49,22 +50,25 @@ namespace _1586_MonochromeTile
             return number;
         }
 
-        private static int[] ReadSpaceSeparatedIntegerNumbers()
+        // 各Areaを表す数字の数は4つで不変。公開するのはIReadonlyList。今後Addと変更せず、要素にアクセスのみするから。
+        private static IReadOnlyList<int> ReadSpaceSeparatedIntegerNumbers()
         {
             const string Space = " ";
             var readLine = Console.ReadLine();
             var splitLine = readLine.Split(Space);
-            return splitLine.Select(int.Parse).ToArray();
+            return splitLine.Select(int.Parse).ToList();
         }
 
         #endregion
 
         #region 演算処理
 
-        private static IEnumerable<int> CountBlackedTiles((int width, int height) tileSize, IEnumerable<int[]> checkAreas)
+        // かなり悩んだ
+        // 元はCreateMonochromeTileAndCountBlackedTilesとしていたが、外からみたらTileなんて知らないし、作られたMonochromeTileは以降アクセス不可
+        private static IEnumerable<int> CountBlackedTiles((int width, int height) tileSize, IEnumerable<IReadOnlyList<int>> checkAreas)
         {
             var whiteTiles = InitializeTiles(tileSize.width, tileSize.height, Color.White);
-            return PaintAllCheckAreasBlack(whiteTiles, checkAreas);
+            return PaintTilesBlackInAllCheckAreas(whiteTiles, checkAreas);
         }
 
         private static Tile[,] InitializeTiles(int width, int height, Color color)
@@ -74,26 +78,24 @@ namespace _1586_MonochromeTile
             {
                 for (var j = 0; j < width; j++)
                 {
-                    tiles[i , j] = new Tile(color);
+                    tiles[j , i] = new Tile(color);
                 }
             }
 
             return tiles;
         }
 
-        private static IEnumerable<int> PaintAllCheckAreasBlack(
-            Tile[,] tiles,
-            IEnumerable<int[]> checkAreas)
+        private static IEnumerable<int> PaintTilesBlackInAllCheckAreas(Tile[,] tiles, IEnumerable<IReadOnlyList<int>> checkAreas)
         {
             var totalCount = 0;
             foreach (var checkArea in checkAreas)
             {
-                var blackedTileCount = PaintCheckAreaBlackTilesBlack(tiles, checkArea);
+                var blackedTileCount = PaintTilesBlackInCheckArea(tiles, checkArea);
                 yield return totalCount += blackedTileCount;
             }
         }
 
-        private static int PaintCheckAreaBlackTilesBlack(Tile[,] tiles, int[] checkArea)
+        private static int PaintTilesBlackInCheckArea(Tile[,] tiles, IReadOnlyList<int> checkArea)
         {
             var targetTiles = GetTilesInArea(tiles, checkArea).ToList();
             var araAllTilesWhite = CheckAllTilesColor(targetTiles, Color.White);
@@ -106,14 +108,14 @@ namespace _1586_MonochromeTile
             return targetTiles.Count;
         }
 
-        private static IEnumerable<Tile> GetTilesInArea(Tile[,] tiles, int[] area)
+        private static IEnumerable<Tile> GetTilesInArea(Tile[,] tiles, IReadOnlyList<int> area)
         {
             var (left, top, right, bottom) = (area[0], area[1], area[2], area[3]);
             for (var i = top - 1; i < bottom; i++)
             {
                 for (var j = left - 1; j < right; j++)
                 {
-                    yield return tiles[i, j];
+                    yield return tiles[j, i];
                 }
             }
         }
