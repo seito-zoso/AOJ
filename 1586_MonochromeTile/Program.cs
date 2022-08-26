@@ -17,7 +17,7 @@ namespace _1586_MonochromeTile
 
         private class Inputs
         {
-            public Inputs(int width, int height, IEnumerable<IEnumerable<int>> checkAreas)
+            public Inputs(int width, int height, IEnumerable<int[]> checkAreas)
             {
                 this.Width = width;
                 this.Height = height;
@@ -28,7 +28,7 @@ namespace _1586_MonochromeTile
 
             public int Height { get; }
 
-            public IEnumerable<IEnumerable<int>> CheckAreas { get; }
+            public IEnumerable<int[]> CheckAreas { get; }
         }
 
         #endregion
@@ -50,9 +50,9 @@ namespace _1586_MonochromeTile
             return (numbers[0], numbers[1]);
         }
 
-        private static IEnumerable<IEnumerable<int>> GetRectangleAreaCollection(int numberOfDays)
+        private static IEnumerable<int[]> GetRectangleAreaCollection(int numberOfDays)
         {
-            var rectangleAreaCollection = new List<IEnumerable<int>>();
+            var rectangleAreaCollection = new List<int[]>();
             for (var i = 0; i < numberOfDays; i++)
             {
                 var rectangleArea = ReadSpaceSeparatedIntegerNumbers();
@@ -69,12 +69,12 @@ namespace _1586_MonochromeTile
             return number;
         }
 
-        private static IEnumerable<int> ReadSpaceSeparatedIntegerNumbers()
+        private static int[] ReadSpaceSeparatedIntegerNumbers()
         {
             const string Space = " ";
             var readLine = Console.ReadLine();
             var splitLine = readLine.Split(Space);
-            return splitLine.Select(int.Parse);
+            return splitLine.Select(int.Parse).ToArray();
         }
 
         private static Inputs GetSampleInputs()
@@ -82,13 +82,13 @@ namespace _1586_MonochromeTile
             return new Inputs(
                 5,
                 4,
-                new List<IEnumerable<int>>()
+                new List<int[]>()
                     {
-                        new List<int>() { 1, 1, 3, 3 },
-                        new List<int>() { 3, 2, 4, 2 },
-                        new List<int>() { 4, 3, 5, 4 },
-                        new List<int>() { 1, 4, 5, 4 },
-                        new List<int>() { 4, 1, 4, 1 },
+                        new [] { 1, 1, 3, 3 },
+                        new [] { 3, 2, 4, 2 },
+                        new [] { 4, 3, 5, 4 },
+                        new [] { 1, 4, 5, 4 },
+                        new [] { 4, 1, 4, 1 },
                     });
         }
 
@@ -129,14 +129,14 @@ namespace _1586_MonochromeTile
             var total = 0;
             foreach (var checkAreaOneDay in checkAreas)
             {
-                var oneDayCount = TaroActsOneDay(tiles, checkAreaOneDay);
+                var oneDayCount = PaintTilesBlack(tiles, checkAreaOneDay);
                 blackedTilesCounts.Add(total += oneDayCount);
             }
 
             return blackedTilesCounts;
         }
 
-        private static int TaroActsOneDay(IEnumerable<IEnumerable<Tile>> tiles, IEnumerable<int> checkAreaOneDay)
+        private static int PaintTilesBlack(IEnumerable<IEnumerable<Tile>> tiles, IEnumerable<int> checkAreaOneDay)
         {
             var targetTiles = GetTilesInArea(tiles, checkAreaOneDay).ToList();
             if (CheckAllTilesColor(targetTiles, Color.White) == false)
