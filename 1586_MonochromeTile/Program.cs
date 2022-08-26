@@ -122,14 +122,9 @@ namespace _1586_MonochromeTile
         {
             //var (width, height) = GetRectangleSize();
             var (height, width) = GetRectangleSize(); // AOJ のテスト入力は高さ、横幅の順
-            var numberOfDays = GetNumberOfDays();
-            var numbersIndicatingRectangleAreaCollection = GetNumbersIndicatingRectangleAreaCollection(numberOfDays);
-            return new Inputs(width, height, numbersIndicatingRectangleAreaCollection);
-        }
-
-        private static int GetNumberOfDays()
-        {
-            return ReadIntegerNumber();
+            var numberOfDays = ReadIntegerNumber();
+            var rectangleAreaCollection = GetRectangleAreaCollection(numberOfDays);
+            return new Inputs(width, height, rectangleAreaCollection);
         }
 
         private static (int, int) GetRectangleSize()
@@ -145,21 +140,16 @@ namespace _1586_MonochromeTile
             return number;
         }
 
-        private static IEnumerable<IEnumerable<int>> GetNumbersIndicatingRectangleAreaCollection(int numberOfDays)
+        private static IEnumerable<IEnumerable<int>> GetRectangleAreaCollection(int numberOfDays)
         {
             var numbersIndicatingRectangleAreaCollection = new List<IEnumerable<int>>();
             for (var i = 0; i < numberOfDays; i++)
             {
-                var numbersIndicatingRectangleArea = GetNumbersIndicatingRectangleArea();
+                var numbersIndicatingRectangleArea = ReadSpaceSeparatedIntegerNumbers();
                 numbersIndicatingRectangleAreaCollection.Add(numbersIndicatingRectangleArea);
             }
 
             return numbersIndicatingRectangleAreaCollection;
-        }
-
-        private static IEnumerable<int> GetNumbersIndicatingRectangleArea()
-        {
-            return ReadSpaceSeparatedIntegerNumbers();
         }
 
         private static IEnumerable<int> ReadSpaceSeparatedIntegerNumbers()
